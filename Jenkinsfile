@@ -7,9 +7,10 @@ pipeline {
                 echo 'Preparando el entorno...'
             }
         }
-        
+
         stage('Clonar código') {
             steps {
+                echo 'Clonando el código...'
                 checkout scm
             }
         }
@@ -17,28 +18,28 @@ pipeline {
         stage('Instalar dependencias') {
             steps {
                 echo 'Instalando dependencias...'
-                sh 'mvn install'
+                bat 'mvn install'
             }
         }
 
         stage('Compilación') {
             steps {
                 echo 'Compilando el proyecto...'
-                sh 'mvn compile'
+                bat 'mvn compile'
             }
         }
 
         stage('Pruebas') {
             steps {
                 echo 'Ejecutando pruebas...'
-                sh 'mvn test'
+                bat 'mvn test'
             }
         }
 
         stage('Despliegue') {
             steps {
                 echo 'Desplegando la aplicación...'
-                sh 'mvn deploy'
+                bat 'mvn deploy'
             }
         }
     }
