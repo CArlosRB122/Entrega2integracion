@@ -1,67 +1,34 @@
 pipeline {
-    agent any // Usa cualquier agente disponible
-
+    agent any
+    tools {
+        maven 'Maven'  // El nombre que has dado a la instalación de Maven en Jenkins
+    }
     stages {
-        stage('Preparación') {
+        stage('Instalar dependencias') {
             steps {
-                echo 'Preparando entorno para el pipeline...'
-                // Configuraciones iniciales, si las necesitas
-            }
-        }
-        stage('Clonar código') {
-            steps {
-                echo 'Descargando código del repositorio...'
-                // Clona el código desde el repositorio configurado en Jenkins
-                checkout scm
-            }
-        }
-        stage('Instalación de dependencias') {
-            steps {
-                echo 'Instalando dependencias necesarias...'
-                // Ajusta este comando según tu tecnología (npm, pip, composer, etc.)
-                bat 'mvn dependency:resolve' // Ejemplo para Maven
+                sh 'mvn dependency:resolve'  // Usar el comando Maven
             }
         }
         stage('Compilación') {
             steps {
-                echo 'Compilando código...'
-                // Cambia el comando según la tecnología que estés usando
-                bat 'mvn clean compile'
+                sh 'mvn compile'  // Compilar el código
             }
         }
         stage('Pruebas') {
             steps {
-                echo 'Ejecutando pruebas...'
-                // Ajusta el comando para ejecutar tus pruebas
-                bat 'mvn test'
+                sh 'mvn test'  // Ejecutar pruebas
             }
         }
         stage('Empaquetar artefactos') {
             steps {
-                echo 'Generando artefactos...'
-                // Cambia el comando para crear los artefactos según tu tecnología
-                bat 'mvn package'
+                sh 'mvn package'  // Empaquetar artefactos
             }
         }
         stage('Despliegue') {
             steps {
-                echo 'Desplegando aplicación...'
-                // Agrega aquí el comando para desplegar la aplicación
-                bat 'echo Comando de despliegue aquí'
+                // Despliegue si es necesario
             }
         }
     }
-
-    post {
-        success {
-            echo '¡Pipeline completado exitosamente!'
-        }
-        failure {
-            echo 'Hubo un error en el pipeline. Revisa los logs para más detalles.'
-        }
-        always {
-            echo 'Pipeline finalizado.'
-            // Aquí puedes agregar comandos adicionales, como notificaciones
-        }
-    }
+}
 }
